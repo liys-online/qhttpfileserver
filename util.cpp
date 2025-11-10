@@ -8,6 +8,13 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#define B * 1
+#define KB * 1024 B
+#define MB * 1024 KB
+#define GB * 1024 MB
+#define TB * 1024 GB
+#define PB * 1024 TB
+
 class UtilPrivate
 {
 public:
@@ -33,9 +40,18 @@ QString Util::readTemplateFile(const QString &filePath)
 void Util::respondFile(QHttpServerResponder &responder, const QString &filePath)
 {
     if (auto *file = new QFile(filePath); file->open(QIODevice::ReadOnly)) {
-        QMimeDatabase db;
-        QByteArray mime = db.mimeTypeForFile(filePath).name().toUtf8();
-        responder.write(file, mime);
+
+        QByteArray mime = QMimeDatabase().mimeTypeForFile(filePath).name().toUtf8();
+
+        // 大于100M
+        if(file->size() > 100 MB) {
+            responder.write(file, mime);
+        }
+        else {
+            responder.write(file->readAll(), mime);
+        }
+        file->close();
+
     }
     else
     {
@@ -90,15 +106,15 @@ QString Util::HtmlItemAccumulator::operator()(const QString &list, const QFileIn
     if(info.isDir()) {
         fileName += "/";
     } else {
-        quint64 fileSize = info.size();
-        if (fileSize >= 1024 * 1024 * 1024)
-            fileSizeStr = QString::number(fileSize / (1024 * 1024 * 1024)) + " GB";
-        else if (fileSize >= 1024 * 1024)
-            fileSizeStr = QString::number(fileSize / (1024 * 1024)) + " MB";
-        else if (fileSize >= 1024)
-            fileSizeStr = QString::number(fileSize / 1024) + " KB";
+        qreal fileSize = info.size();
+        if (fileSize >= 1 GB)
+            fileSizeStr = QString::number(fileSize / (1 GB)) + " GB";
+        else if (fileSize >= 1 MB)
+            fileSizeStr = QString::number(fileSize / (1 MB)) + " MB";
+        else if (fileSize >= 1 KB)
+            fileSizeStr = QString::number(fileSize / (1 KB)) + " KB";
         else
-            fileSizeStr = QString::number(fileSize) + " B";
+            fileSizeStr = QString::number(fileSize / (1 B)) + " B";
     }
 
     return list + Util::itemTemplate(info.isDir() ? "icon-folder-close" : "icon-file",
