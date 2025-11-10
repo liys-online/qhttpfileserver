@@ -58,3 +58,4 @@ build/
 
 # MacOS
 *.DS_Store
+httpfileserver.ico
