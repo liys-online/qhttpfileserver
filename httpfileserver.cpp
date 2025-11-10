@@ -152,8 +152,13 @@ bool HttpFileServer::listen(const QHostAddress &address, quint16 port)
     addRouter(QSharedPointer<StaticResourceRouter>::create());
     addRouter(QSharedPointer<FileRouter>::create());
 
+    auto host = d_ptr->hostAddress.toString();
+    if (d_ptr->hostAddress == QHostAddress::Any) {
+        host = QHostAddress(QHostAddress::LocalHost).toString();
+    }
+
     qInfo() << "目录浏览服务器已启动, 文件目录:" << Util::rootDir();
-    qInfo() << "浏览：http://127.0.0.1:80/";
+    qInfo() << QString("浏览：http://%1:%2/").arg(host, QString::number(d_ptr->port));
 #ifdef ENABLE_GUI
     d_ptr->showTrayIcon();
 #endif
