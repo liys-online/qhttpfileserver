@@ -37,6 +37,7 @@ Router::RequestHandler FileRouter::requestHandler()
             else if(fileInfo.isDir() && fileInfo.isNativePath())
             {
                 QString html = Util::readTemplateFile(":/html/index-template.html");
+                html.replace("${qt-version}$", QT_VERSION_STR);
 
                 if(dir.cd(pathStr))
                 {
