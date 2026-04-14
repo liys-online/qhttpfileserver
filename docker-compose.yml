@@ -1,0 +1,10 @@
+services:
+  httpfileserver:
+    build: .
+    image: qhttpfileserver:latest
+    container_name: httpfileserver
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped

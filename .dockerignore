@@ -1,0 +1,9 @@
+build/
+.git/
+*.user
+*.ilk
+*.pdb
+Testing/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
