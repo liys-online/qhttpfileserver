@@ -25,7 +25,7 @@ public:
     {
 
     }
-
+#ifdef ENABLE_GUI
     void activateTrayIcon(QSystemTrayIcon::ActivationReason reason)
     {
         switch (reason) {
@@ -41,7 +41,7 @@ public:
             break;
         }
     }
-#ifdef ENABLE_GUI
+
     bool showTrayIcon()
     {
         if (QSystemTrayIcon::isSystemTrayAvailable() && !trayIcon) {
@@ -65,7 +65,7 @@ public:
         }
         return trayIcon != nullptr;
     }
-#endif
+
     void changeRootDir()
     {
         QString directory = QFileDialog::getExistingDirectory(nullptr, "选择文件目录", q_ptr->rootDir());
@@ -74,6 +74,7 @@ public:
             qDebug() << "选择的目录:" << directory;
         }
     }
+#endif
     HttpFileServerPrivate(const HttpFileServerPrivate &) = delete;
     HttpFileServerPrivate& operator=(const HttpFileServerPrivate &) = delete;
 

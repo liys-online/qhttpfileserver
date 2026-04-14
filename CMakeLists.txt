@@ -8,7 +8,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-option(ENABLE_GUI "Enable GUI" ON)
+option(ENABLE_GUI "Enable GUI" OFF)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 list(APPEND QT_MODULES Core HttpServer)
@@ -44,7 +44,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
               -always-overwrite -dmg
     )
   elseif(WIN32)
-    qt_add_executable(httpserver WIN32 ${PROJECT_SOURCES})
+    qt_add_executable(httpserver ${PROJECT_SOURCES})
   else()
     qt_add_executable(httpserver MANUAL_FINALIZATION ${PROJECT_SOURCES})
   endif()

@@ -13,7 +13,9 @@ using Application = QCoreApplication;
 
 int main(int argc, char *argv[])
 {
+#ifdef ENABLE_GUI
     Application::setQuitOnLastWindowClosed(false);
+#endif
 
     Application app(argc, argv);
     QVersionNumber version(0, 0, 1);
