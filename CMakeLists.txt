@@ -28,9 +28,12 @@ set(PROJECT_SOURCES
   router/router.h router/router.cpp
   router/filerouter.h router/filerouter.cpp
   router/staticresourcerouter.h router/staticresourcerouter.cpp
-  resource.qrc
-  app_icon.rc
 )
+if(ENABLE_GUI)
+  set(PROJECT_SOURCES ${PROJECT_SOURCES} 
+    resource.qrc
+    app_icon.rc)
+endif()
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/router
