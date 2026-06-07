@@ -1,10 +1,10 @@
 services:
   httpfileserver:
     build: .
-    image: qhttpfileserver:latest
-    container_name: httpfileserver
+    image: liyaosong/qhttpfileserver:latest
+    container_name: qhttpfileserver
     ports:
-      - "8080:8080"
+      - "80:80"
     volumes:
       - ./data:/data
     restart: unless-stopped
