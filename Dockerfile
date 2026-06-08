@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y \
     libgl1 \
     libxkbcommon0 \
     libglib2.0-0 \
-    libkrb5-3 \
+    libgssapi-krb5-2 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
