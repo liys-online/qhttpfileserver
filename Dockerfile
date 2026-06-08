@@ -43,12 +43,7 @@ RUN apt-get update && apt-get install -y \
     libxkbcommon0 \
     libglib2.0-0 \
     libgssapi-krb5-2 \
-    libicu74 \
     && rm -rf /var/lib/apt/lists/*
-
-RUN ln -s /usr/lib/x86_64-linux-gnu/libicui18n.so.74 /usr/lib/x86_64-linux-gnu/libicui18n.so.73 && \
-    ln -s /usr/lib/x86_64-linux-gnu/libicuuc.so.74 /usr/lib/x86_64-linux-gnu/libicuuc.so.73 && \
-    ln -s /usr/lib/x86_64-linux-gnu/libicudata.so.74 /usr/lib/x86_64-linux-gnu/libicudata.so.73
 
 WORKDIR /app
 
@@ -57,6 +52,9 @@ COPY --from=builder /opt/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6 /app/lib/
 COPY --from=builder /opt/Qt/6.8.3/gcc_64/lib/libQt6Network.so.6 /app/lib/
 COPY --from=builder /opt/Qt/6.8.3/gcc_64/lib/libQt6HttpServer.so.6 /app/lib/
 COPY --from=builder /opt/Qt/6.8.3/gcc_64/lib/libQt6WebSockets.so.6 /app/lib/
+COPY --from=builder /opt/Qt/6.8.3/gcc_64/lib/libicui18n.so.73 /app/lib/
+COPY --from=builder /opt/Qt/6.8.3/gcc_64/lib/libicuuc.so.73 /app/lib/
+COPY --from=builder /opt/Qt/6.8.3/gcc_64/lib/libicudata.so.73 /app/lib/
 
 ENV LD_LIBRARY_PATH=/app/lib
 
