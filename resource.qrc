@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>httpfileserver.ico</file>
         <file>html/file-list-item-template.html</file>
         <file>html/index-template.html</file>
         <file>html/static/bootstrap.css</file>
