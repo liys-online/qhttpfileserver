@@ -46,6 +46,10 @@ RUN apt-get update && apt-get install -y \
     libicu74 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN ln -s /usr/lib/x86_64-linux-gnu/libicui18n.so.74 /usr/local/lib/libicui18n.so.73 && \
+    ln -s /usr/lib/x86_64-linux-gnu/libicuuc.so.74 /usr/local/lib/libicuuc.so.73 && \
+    ln -s /usr/lib/x86_64-linux-gnu/libicudata.so.74 /usr/local/lib/libicudata.so.73
+
 WORKDIR /app
 
 COPY --from=builder /src/build/httpserver /app/httpserver
