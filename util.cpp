@@ -46,7 +46,7 @@ void Util::respondFile(QHttpServerResponder &responder, const QString &filePath)
         QByteArray mime = QMimeDatabase().mimeTypeForFile(filePath).name().toUtf8();
         QHttpHeaders headers;
         headers.append(QHttpHeaders::WellKnownHeader::ContentType, mime);
-        headers.append(QHttpHeaders::WellKnownHeader::CacheControl, "no-cache");
+        headers.append(QHttpHeaders::WellKnownHeader::CacheControl, "no-store, no-cache, must-revalidate, proxy-revalidate");
         responder.write(file, headers);
     }
     else
