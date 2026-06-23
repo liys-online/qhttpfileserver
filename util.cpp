@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QHttpServerResponse>
+#include <QHttpHeaders>
 #include <QMimeDatabase>
 #include <QDir>
 #include <QUrl>
@@ -25,14 +26,15 @@ Util::Util() {}
 
 QString Util::readTemplateFile(const QString &filePath)
 {
-    if (auto *file = new QFile(filePath); !file->open(QIODevice::ReadOnly | QIODevice::Text)) {
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "无法打开模板文件";
         return QString();
     }
     else
     {
-        QString html = file->readAll();
-        file->close();
+        QString html = file.readAll();
+        file.close();
         return html;
     }
 }
@@ -42,7 +44,10 @@ void Util::respondFile(QHttpServerResponder &responder, const QString &filePath)
     auto *file = new QFile(filePath);
     if (file->open(QIODevice::ReadOnly)) {
         QByteArray mime = QMimeDatabase().mimeTypeForFile(filePath).name().toUtf8();
-        responder.write(file, mime);
+        QHttpHeaders headers;
+        headers.append(QHttpHeaders::WellKnownHeader::ContentType, mime);
+        headers.append(QHttpHeaders::WellKnownHeader::CacheControl, "no-cache");
+        responder.write(file, headers);
     }
     else
     {
