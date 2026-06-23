@@ -39,22 +39,14 @@ QString Util::readTemplateFile(const QString &filePath)
 
 void Util::respondFile(QHttpServerResponder &responder, const QString &filePath)
 {
-    if (auto *file = new QFile(filePath); file->open(QIODevice::ReadOnly)) {
-
+    auto *file = new QFile(filePath);
+    if (file->open(QIODevice::ReadOnly)) {
         QByteArray mime = QMimeDatabase().mimeTypeForFile(filePath).name().toUtf8();
-
-        // 大于100M
-        if(file->size() > 100 MB) {
-            responder.write(file, mime);
-        }
-        else {
-            responder.write(file->readAll(), mime);
-        }
-        file->close();
-
+        responder.write(file, mime);
     }
     else
     {
+        delete file;
         qWarning() << "无法打开文件" << filePath;
         responder.write(errorJson("Directory or file not found"), QHttpServerResponse::StatusCode::NotFound);
     }
